@@ -1,13 +1,31 @@
 "use client";
 
-import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { cn } from "@/lib/utils";
 import { useMutation } from "convex/react";
-import { ChevronDown, ChevronRight, LucideIcon, Plus } from "lucide-react";
+
+import { useUser } from "@clerk/clerk-react";
+import {
+  ChevronDown,
+  ChevronRight,
+  LucideIcon,
+  MoreHorizontal,
+  Plus,
+  Trash2,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+
+import { cn } from "@/lib/utils";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface ItemProps {
   id?: Id<"documents">;
@@ -18,7 +36,7 @@ interface ItemProps {
   level?: number;
   onExpand?: () => void;
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
   icon: LucideIcon;
 }
 
@@ -34,9 +52,11 @@ export default function Item({
   level = 0,
   onExpand,
 }: ItemProps) {
-  const create = useMutation(api.documents.create);
+  const { user } = useUser();
   const router = useRouter();
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
+  const create = useMutation(api.documents.create);
+  const archive = useMutation(api.documents.archive);
 
   const handleExpand = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -63,6 +83,17 @@ export default function Item({
     });
   };
 
+  const onArchive = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (!id) return;
+    event.stopPropagation();
+    const promise = archive({ id });
+    toast.promise(promise, {
+      loading: "Moving to trash...",
+      success: "Note moved to trash!",
+      error: "Faild to archive note.",
+    });
+  };
+
   return (
     <div
       role="button"
@@ -78,7 +109,7 @@ export default function Item({
       {!!id && (
         <div
           role="button"
-          className="mr-1 h-full rounded-sm hover:bg-neutral-300 dark:bg-neutral-600"
+          className="mr-1 h-full rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600"
           onClick={handleExpand}
         >
           <ChevronIcon className="size-4 shrink-0 text-muted-foreground/50" />
@@ -99,6 +130,32 @@ export default function Item({
 
       {!!id && (
         <div className="ml-auto flex items-center gap-x-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger onClick={(e) => e.stopPropagation()} asChild>
+              <div
+                role="button"
+                className="ml-auto h-full rounded-sm opacity-0 hover:bg-neutral-300 group-hover:opacity-100 dark:hover:bg-neutral-600"
+              >
+                <MoreHorizontal className="size-4 text-muted-foreground" />
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="w-60"
+              align="start"
+              side="right"
+              forceMount
+            >
+              <DropdownMenuItem onClick={onArchive}>
+                <Trash2 className="mr-2 size-4" />
+                Delete
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <div className="p-2 text-xs font-semibold text-muted-foreground">
+                Last Edit by: {user?.fullName}
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <div
             role="button"
             onClick={onCreate}

@@ -4,13 +4,15 @@ import { ElementRef, useEffect, useRef, useState } from "react";
 import {
   ChevronsLeft,
   MenuIcon,
+  Plus,
   PlusCircle,
   Search,
   Settings,
+  Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
 
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { useMediaQuery } from "usehooks-ts";
 
 import { useMutation } from "convex/react";
@@ -18,14 +20,27 @@ import { api } from "@/convex/_generated/api";
 
 import { cn } from "@/lib/utils";
 
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
 import UserItem from "./UserItem";
 import Item from "./item";
 import DocumentList from "./document_list";
+import TrashBox from "./trash_box";
+import { useSearch } from "@/hooks/use-search";
+import { useSettings } from "@/hooks/use-settings";
+import Navbar from "./navbar";
 
 export default function Navigation() {
-  const create = useMutation(api.documents.create);
+  const search = useSearch();
+  const settings = useSettings();
 
+  const create = useMutation(api.documents.create);
   const pathname = usePathname();
+  const params = useParams();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const isResizingRef = useRef(false);
@@ -133,7 +148,7 @@ export default function Navigation() {
           role="button"
           onClick={collapse}
           className={cn(
-            "absolute right-3 top-3 size-6 rounded-sm text-muted-foreground opacity-0 transition hover:bg-neutral-300 group-hover/sidebar:opacity-100 dark:bg-neutral-600",
+            "absolute right-3 top-3 size-6 rounded-sm text-muted-foreground opacity-0 transition hover:bg-neutral-300 group-hover/sidebar:opacity-100 dark:hover:bg-neutral-600",
             isMobile && "opacity-100",
           )}
         >
@@ -141,12 +156,24 @@ export default function Navigation() {
         </div>
         <div>
           <UserItem />
-          <Item label="Search" icon={Search} isSearch onClick={() => {}} />
-          <Item label="Settings" icon={Settings} onClick={() => {}} />
+          <Item label="Search" icon={Search} isSearch onClick={search.onOpen} />
+          <Item label="Settings" icon={Settings} onClick={settings.onOpen} />
           <Item onClick={handleCreate} label="New page" icon={PlusCircle} />
         </div>
         <div className="mt-4">
           <DocumentList />
+          <Item onClick={handleCreate} icon={Plus} label="Add a page" />
+          <Popover>
+            <PopoverTrigger className="mt-4 w-full">
+              <Item icon={Trash2} label="Trash" />
+            </PopoverTrigger>
+            <PopoverContent
+              className="w-72 p-0"
+              side={isMobile ? "bottom" : "right"}
+            >
+              <TrashBox />
+            </PopoverContent>
+          </Popover>
         </div>
         <div
           onMouseDown={handleMouseDown}
@@ -162,15 +189,19 @@ export default function Navigation() {
           isMobile && "left-0 w-full",
         )}
       >
-        <nav className="w-full bg-transparent px-3 py-2">
-          {isCollapsed && (
-            <MenuIcon
-              onClick={resetWidth}
-              role="button"
-              className="h-6 w-6 text-muted-foreground"
-            />
-          )}
-        </nav>
+        {!!params.documentId ? (
+          <Navbar isCollapsed={isCollapsed} onResetWidth={resetWidth} />
+        ) : (
+          <nav className="w-full bg-transparent px-3 py-2">
+            {isCollapsed && (
+              <MenuIcon
+                onClick={resetWidth}
+                role="button"
+                className="h-6 w-6 text-muted-foreground"
+              />
+            )}
+          </nav>
+        )}
       </div>
     </>
   );
