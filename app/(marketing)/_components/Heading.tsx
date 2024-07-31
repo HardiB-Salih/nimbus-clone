@@ -14,26 +14,26 @@ export default function Heading({}: HeadingProps) {
 
   return (
     <div className="max-w-3xl space-y-4">
-      <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold">
+      <h1 className="text-3xl font-bold sm:text-5xl md:text-6xl">
         Your Ideas, Document, & Plans. Unified. Welcome to{" "}
-        <span className="underline">Notion</span>
+        <span className="underline">Nimbus</span>
       </h1>
-      <h3 className="text-base sm:text-xl md:text-2xl font-medium">
-        Notion is the connected workspace where <br /> better, faster work
+      <h3 className="text-base font-medium sm:text-xl md:text-2xl">
+        Nimbus is the connected workspace where <br /> better, faster work
         happen
       </h3>
       {isLoading && <Spinner className="mx-auto h-10" />}
       {!isAuthenticated && !isLoading && (
         <SignInButton mode="modal">
-          <Button size="sm">Get Notion Free</Button>
+          <Button size="sm">Get Nimbus Free</Button>
         </SignInButton>
       )}
 
       {isAuthenticated && !isLoading && (
         <Button asChild>
           <Link href="/documents">
-            Enter Notion
-            <ArrowRight className="size-4 ml-2" />
+            Enter Nimbus
+            <ArrowRight className="ml-2 size-4" />
           </Link>
         </Button>
       )}

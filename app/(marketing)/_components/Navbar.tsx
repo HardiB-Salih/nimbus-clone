@@ -20,12 +20,12 @@ export default function Navbar({}: NavbarProps) {
   return (
     <div
       className={cn(
-        "z-50 bg-background flex top-0 fixed items-center w-full p-6",
-        scrolled && "border-b shadow-sm"
+        "fixed top-0 z-50 flex w-full items-center bg-background p-6",
+        scrolled && "border-b shadow-sm",
       )}
     >
       <Logo />
-      <div className="md:ml-auto md:justify-end justify-between w-full flex items-center gap-x-2">
+      <div className="flex w-full items-center justify-between gap-x-2 md:ml-auto md:justify-end">
         {isLoading && <Spinner />}
         {!isAuthenticated && !isLoading && (
           <>
@@ -36,7 +36,7 @@ export default function Navbar({}: NavbarProps) {
             </SignInButton>
 
             <SignInButton mode="modal">
-              <Button size="sm">Get Notion Free</Button>
+              <Button size="sm">Get Nimbus Free</Button>
             </SignInButton>
           </>
         )}
@@ -44,7 +44,7 @@ export default function Navbar({}: NavbarProps) {
         {isAuthenticated && !isLoading && (
           <>
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/documents">Enter Notion</Link>
+              <Link href="/documents">Enter Nimbus</Link>
             </Button>
             <UserButton />
           </>

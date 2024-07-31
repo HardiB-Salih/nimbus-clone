@@ -11,7 +11,7 @@ import ModalProvider from "@/providers/modal-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Notion",
+  title: "Nimbus",
   description: "The connected workspace where better, faster work happy",
   icons: {
     icon: [

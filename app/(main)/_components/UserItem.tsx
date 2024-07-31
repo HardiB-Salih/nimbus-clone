@@ -19,20 +19,20 @@ export default function UserItem({}: UserItemProps) {
       <DropdownMenuTrigger asChild>
         <div
           role="button"
-          className="flex items-center text-sm w-full p-3 hover:bg-primary/5"
+          className="flex w-full items-center p-3 text-sm hover:bg-primary/5"
         >
-          <div className="gap-x-2 flex items-center max-w-[150px]">
+          <div className="flex max-w-[150px] items-center gap-x-2">
             <Avatar className="size-5">
               <AvatarImage
                 src={user?.imageUrl}
                 alt={`${user?.firstName}&apos;s Image`}
               />
             </Avatar>
-            <span className="text-start font-medium  line-clamp-1">
+            <span className="line-clamp-1 text-start font-medium">
               {user?.fullName}&apos;s Nothion
             </span>
           </div>
-          <ChevronsLeftRightIcon className="rotate-90 ml-2 text-muted-foreground size-4" />
+          <ChevronsLeftRightIcon className="ml-2 size-4 rotate-90 text-muted-foreground" />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -55,8 +55,8 @@ export default function UserItem({}: UserItemProps) {
               </Avatar>
             </div>
             <div className="space-y-1">
-              <p className="text-sm line-clamp-1">
-                {user?.fullName}&apos;s notion
+              <p className="line-clamp-1 text-sm">
+                {user?.fullName}&apos;s nimbus
               </p>
             </div>
           </div>

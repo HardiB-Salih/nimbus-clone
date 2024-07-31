@@ -26,7 +26,7 @@ export default function DocumentsPage({}: DocumentsPageProps) {
   };
 
   return (
-    <div className=" flex flex-col items-center justify-center space-y-4 h-full">
+    <div className="flex h-full flex-col items-center justify-center space-y-4">
       <Image
         src="/oc-hi-five.svg"
         height={300}
@@ -42,10 +42,10 @@ export default function DocumentsPage({}: DocumentsPageProps) {
         className="hidden dark:block"
       />
       <h2 className="text-lg font-medium">
-        Wlcome to {user?.firstName}&apos;s Notion
+        Welcome to {user?.firstName}&apos;s nimbus
       </h2>
       <Button onClick={onCreate}>
-        <PlusCircle className="size-4 mr-2" />
+        <PlusCircle className="mr-2 size-4" />
         Create a note
       </Button>
     </div>
