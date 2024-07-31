@@ -1,14 +1,30 @@
 "use client";
 
 import { ElementRef, useEffect, useRef, useState } from "react";
+import {
+  ChevronsLeft,
+  MenuIcon,
+  PlusCircle,
+  Search,
+  Settings,
+} from "lucide-react";
+import { toast } from "sonner";
+
 import { usePathname } from "next/navigation";
 import { useMediaQuery } from "usehooks-ts";
-import { ChevronsLeft, MenuIcon } from "lucide-react";
+
+import { useMutation, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+
 import { cn } from "@/lib/utils";
 
-interface NavigationProps {}
+import UserItem from "./UserItem";
+import Item from "./item";
 
-export default function Navigation({}: NavigationProps) {
+export default function Navigation() {
+  const create = useMutation(api.documents.create);
+  const documents = useQuery(api.documents.get);
+
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -32,7 +48,7 @@ export default function Navigation({}: NavigationProps) {
     }
   }, [isMobile, pathname]);
   const handleMouseDown = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
     event.preventDefault();
     event.stopPropagation();
@@ -55,7 +71,7 @@ export default function Navigation({}: NavigationProps) {
       navbarRef.current.style.setProperty("left", `${newWidth}px`);
       navbarRef.current.style.setProperty(
         "width",
-        `calc(100% - ${newWidth}px)`
+        `calc(100% - ${newWidth}px)`,
       );
     }
   };
@@ -74,7 +90,7 @@ export default function Navigation({}: NavigationProps) {
       navbarRef.current.style.setProperty("left", isMobile ? "100%" : "240px");
       navbarRef.current.style.setProperty(
         "width",
-        isMobile ? "0" : "calc(100% - 240px)"
+        isMobile ? "0" : "calc(100% - 240px)",
       );
 
       setTimeout(() => setIsResetting(false), 300);
@@ -94,47 +110,59 @@ export default function Navigation({}: NavigationProps) {
     }
   };
 
+  const handleCreate = () => {
+    const promise = create({ title: "Untitled" });
+    toast.promise(promise, {
+      loading: "Creating a new note...",
+      success: "New note created",
+      error: "Faild to create a new note",
+    });
+  };
+
   return (
     <>
       <aside
         ref={sidebarRef}
         className={cn(
-          "group/sidebar h-full bg-secondary overflow-y-auto relative flex w-60 flex-col z-[99999]",
-          isResetting && "transition-all ease-in-out duration-300",
-          isMobile && "w-0"
+          "group/sidebar relative z-[99999] flex h-full w-60 flex-col overflow-y-auto bg-secondary",
+          isResetting && "transition-all duration-300 ease-in-out",
+          isMobile && "w-0",
         )}
       >
         <div
           role="button"
           onClick={collapse}
           className={cn(
-            "size-6 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:bg-neutral-600 absolute top-3 right-3 opacity-0 group-hover/sidebar:opacity-100 transition",
-            isMobile && "opacity-100"
+            "absolute right-3 top-3 size-6 rounded-sm text-muted-foreground opacity-0 transition hover:bg-neutral-300 group-hover/sidebar:opacity-100 dark:bg-neutral-600",
+            isMobile && "opacity-100",
           )}
         >
           <ChevronsLeft className="size-6" />
         </div>
         <div>
-          <p>Action items</p>
+          <UserItem />
+          <Item label="Search" icon={Search} isSearch onClick={() => {}} />
+          <Item label="Settings" icon={Settings} onClick={() => {}} />
+          <Item onClick={handleCreate} label="New page" icon={PlusCircle} />
         </div>
         <div className="mt-4">
-          <p>Documents</p>
+          {documents?.map((doc) => <p key={doc._id}>{doc.title}</p>)}
         </div>
         <div
           onMouseDown={handleMouseDown}
           onClick={resetWidth}
-          className="opacity-0 group-hover/sidebar:opacity-100 transition cursor-ew-resize absolute h-full w-1 bg-primary/10 right-0 top-0"
+          className="absolute right-0 top-0 h-full w-1 cursor-ew-resize bg-primary/10 opacity-0 transition group-hover/sidebar:opacity-100"
         />
       </aside>
       <div
         ref={navbarRef}
         className={cn(
-          "absolute top-0 z-[99999] left-60 w-[calc(100%-240px)]",
-          isResetting && "transition-all ease-in-out duration-300",
-          isMobile && "left-0 w-full"
+          "absolute left-60 top-0 z-[99999] w-[calc(100%-240px)]",
+          isResetting && "transition-all duration-300 ease-in-out",
+          isMobile && "left-0 w-full",
         )}
       >
-        <nav className="bg-transparent px-3 py-2 w-full">
+        <nav className="w-full bg-transparent px-3 py-2">
           {isCollapsed && (
             <MenuIcon
               onClick={resetWidth}
