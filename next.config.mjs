@@ -1,4 +1,14 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        pathname: "https",
+        hostname: "files.edgestore.dev",
+        pathname: "**",
+      },
+    ],
+  },
+};
 
 export default nextConfig;

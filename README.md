@@ -45,8 +45,8 @@ Nimbus is a powerful and flexible clone of Notion, built with modern web technol
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/nimbus.git
-   cd nimbus
+   git clone https://github.com/HardiB-Salih/notion-clone.git
+   cd notion-clone
    ```
 
 2. **Install dependencies:**
@@ -62,8 +62,13 @@ Nimbus is a powerful and flexible clone of Notion, built with modern web technol
    Create a `.env.local` file in the root directory and add the necessary environment variables:
 
    ```
+   # Deployment used by `npx convex dev`
+   CONVEX_DEPLOYMENT=dev:
    NEXT_PUBLIC_CONVEX_URL=<your_convex_url>
-   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=<your_clerk_publishable_key>
+
+   # Clerck
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_
+   CLERK_SECRET_KEY=sk_test_
    ```
 
 4. **Run the development server:**
