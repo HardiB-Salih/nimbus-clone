@@ -1,3 +1,7 @@
+Here's the revised version of your README, ensuring clarity, accuracy, and consistency:
+
+---
+
 # Nimbus
 
 Nimbus is a powerful and flexible clone of Notion, built with modern web technologies to provide a seamless and efficient experience for managing documents, notes, and tasks. Nimbus uses Next.js for the frontend, Shadcn UI for component styling, and Convex for the backend, offering a robust and scalable architecture.
@@ -17,7 +21,7 @@ Nimbus is a powerful and flexible clone of Notion, built with modern web technol
 - **Rich Text Editing**: Create and edit documents with a powerful WYSIWYG editor.
 - **Document Management**: Organize your documents with folders, tags, and more.
 - **Real-Time Collaboration**: Collaborate with others in real-time.
-- **Dark/Light Mode**: Automatically adjusts based on the user's system preference or manually toggleable.
+- **Dark/Light Mode**: Automatically adjusts based on the user's system preference or can be manually toggled.
 - **Responsive Design**: Fully responsive and accessible on all devices.
 - **Search Functionality**: Quickly find documents and content with a powerful search tool.
 
@@ -45,8 +49,8 @@ Nimbus is a powerful and flexible clone of Notion, built with modern web technol
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/HardiB-Salih/notion-clone.git
-   cd notion-clone
+   git clone https://github.com/HardiB-Salih/nimbus-clone.git
+   cd nimbus-clone
    ```
 
 2. **Install dependencies:**
@@ -61,14 +65,18 @@ Nimbus is a powerful and flexible clone of Notion, built with modern web technol
 
    Create a `.env.local` file in the root directory and add the necessary environment variables:
 
-   ```
-   # Deployment used by `npx convex dev`
+   ```bash
+   # Convex
    CONVEX_DEPLOYMENT=dev:
    NEXT_PUBLIC_CONVEX_URL=<your_convex_url>
 
-   # Clerck
-   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_
-   CLERK_SECRET_KEY=sk_test_
+   # Clerk
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_<your_clerk_publishable_key>
+   CLERK_SECRET_KEY=sk_test_<your_clerk_secret_key>
+
+   # EdgeStore
+   EDGE_STORE_ACCESS_KEY=<your_edgestore_access_key>
+   EDGE_STORE_SECRET_KEY=<your_edgestore_secret_key>
    ```
 
 4. **Run the development server:**
@@ -79,15 +87,16 @@ Nimbus is a powerful and flexible clone of Notion, built with modern web technol
    npm run dev
    ```
 
-   Open [http://localhost:3000](http://localhost:3000) to see the app.
+   Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 ## Usage
 
-Once the application is running, you can start creating and managing documents. The interface is intuitive and user-friendly, with support for creating rich text documents, organizing them into folders, and collaborating with others in real-time.
+Once the application is running, you can start creating and managing documents. The interface is intuitive and user-friendly, supporting the creation of rich text documents, organization into folders, and real-time collaboration.
 
 ## Project Structure
 
 - `pages/`: Contains the Next.js pages for different routes.
+- `(foldername)/_components`: Contains React components used for specific sections.
 - `components/`: Reusable React components used throughout the application.
 - `lib/`: Utility functions and libraries.
 - `styles/`: Global and component-specific styles.
@@ -95,7 +104,7 @@ Once the application is running, you can start creating and managing documents. 
 
 ## Contributing
 
-We welcome contributions to Nimbus! If you'd like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcome.
+We welcome contributions to Nimbus! If you'd like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcomed.
 
 1. **Fork the repo and create your branch:**
 
@@ -123,4 +132,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-Feel free to modify and adapt Nimbus to suit your needs. We hope it helps you in your journey to build powerful and intuitive applications!
+Feel free to modify and adapt Nimbus to suit your needs. We hope it helps you build powerful and intuitive applications!
